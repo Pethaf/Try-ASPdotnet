@@ -1,0 +1,139 @@
+ASP.NET MVC = .NET framework for rapid development of web applications.
+
+Helps make code clean and easty to maintain
+Handles everything from the UI to the server environment
+Runs on Linux/osX/Windows.
+
+Data flow through MVC application.
+  ________________________________________________________
+  |                                                      |
+ _↓___________           ___________              _______|_____
+|            |          |           |            |            |
+| Browser    | ------>  |Controller |----------> |  View      |
+|____________|          |___________|            |____________|
+                             |   ^
+                             |   |
+                             |   |
+                             ↓   |
+                        _________|_
+                       |  Model  |
+                       |_________|
+
+
+Mvc project has folder structure.
+
+ ___________________
+|                   |
+|  AppName          |
+|___________________|
+        |
+        |                 _____________
+        |--------------->|  MOdels    |
+        |                |____________|
+        |
+        |                ______________
+        |-------------> |     Views   |
+        |               |_____________|
+        |               _______________
+        |------------->|  Controllers  |
+                       |_______________|
+
+.cshtml = template file mixes C# and html to generate pages.
+
+Views/Home/index.cshtml
+
+@model String
+<h2>Charactters</h2>
+
+<div>
+  <ul>
+    <li>@Model</li>  @model = defines data @Model = accesses data.
+ <ul>
+</div>
+
+Corresponding controller
+
+./Controllers/HomeController.cs
+
+namespace AppName.Controllers
+{
+  public class HomeController: Controller
+  {
+    public IActionResult Index()
+    {
+          var name = "Hux";
+          return View("Index", name);    <----- Index = "name of view".
+    }
+  }
+
+}
+
+Methods that return IActionResult ="Action methods", they provide responses
+usable by browsers.
+
+Routing.
+
+Routes = method for application to decide which controller and which controller
+action to access, depending on url.
+
+Mapping between Routes and Controllers
+
+By default, first section of route maps up to controller of same name.
+I.e.
+
+http:://www.example.com/Home/Index maps up to HomeController and the action
+Index.
+
+Similar mapping between controllers and views.
+
+public class HomeContoller: Controller
+{
+    public IActionResult Index() maps to Index.cshthml in Views /Home
+    {
+        return View(); returns view located in Home/index.cshtml
+    }
+}
+
+Default routing controlls what happens when controller and/or view is
+omitted from url.
+
+http:://www.example.com -> http:://www.example.com/Home/Index
+
+Models
+
+Model = container for data.
+
+Adding fields to first model.
+
+./Models/Character.cs
+
+namespace AppName.Models
+{
+public class Character
+{
+    public string Name;
+}
+
+}
+
+
+./Controllers/HomeController.cs
+
+public IActionResult Index()
+{
+    var model = new AppName.Modles.Character(); Separation of concerns ->
+    model.Name = "Hux";                         Models/Views/Controllers def.
+    return View(model);                         in different namespaces.
+}
+
+./Views/Home/Index.cshtml
+
+@model AppName.Models.Character
+
+<h2>Characters</h2>
+
+<div>
+  <ul>
+  <li>@Model.Name</li>
+  </ul>
+</div>
