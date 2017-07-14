@@ -137,3 +137,32 @@ public IActionResult Index()
   <li>@Model.Name</li>
   </ul>
 </div>
+
+Section 2 handling user input
+
+Want to add method of handling user input for values, instead of relying on
+static values. Need to do 3 things.
+
+1. Create form in view.
+2. Add Create() method to controller.
+3. Move logic from Index() to Create().
+
+./Views/Home/Index.cshtml 1
+
+<form asp-action="Create" asp-controller="Home"> < tag-helpers,
+                                                specifies what controller to run.
+  <div>
+    <input name="CharacterName" />
+    <input type="submit" value="Add Character" />
+  </div>
+</form>
+
+./Controllers/HomeController.cs 2
+
+public IActionResult Create(string characterName)
+{
+  var model = new AppName.Models.Character();
+  model.Name = characterName;
+  return View("Index",model); returns Index view, with model data when method is
+                              called.
+}
